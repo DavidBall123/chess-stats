@@ -1,0 +1,58 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Node / web (Vite)
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# .NET / C#
+bin/
+obj/
+out/
+TestResults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# ASP.NET / tooling
+appsettings.Development.local.json
+
+# Docker
+*.pid
+*.seed
+
+# Local database / temp
+*.sqlite
+*.sqlite3
+*.db
+tmp/
+temp/
+
+# Optional local infra overrides
+docker-compose.override.yml
