@@ -1,1 +1,38 @@
-# chess-stats
+# ChessMonitor
+
+Local-first chess analytics template using Docker Compose with separate `web`, `api`, `worker`, and `db` services.
+
+## Stack
+- Web: React + Vite + Tailwind (containerized)
+- API: ASP.NET Core Web API (.NET 8)
+- Worker: .NET Worker Service (ingestion + analysis)
+- Database: PostgreSQL 16
+
+## Repository Layout
+- `infra/docker-compose.yml`: local orchestration entrypoint
+- `src/web`: frontend app
+- `src/api`: backend API
+- `src/worker`: ingestion and analysis worker
+- `src/shared`: shared contracts/domain models
+- `docs/SETUP.md`: environment setup and first run
+- `docs/WORKSPACE.md`: planned .NET workspace/solution structure
+
+## Quick Start
+1. Copy `.env.example` to `.env` and set `CHESSCOM_USERNAME`.
+2. Start Docker Desktop (WSL integration enabled if using WSL).
+3. Run:
+   ```bash
+   docker compose -f infra/docker-compose.yml up --build
+   ```
+4. Access:
+   - Web: `http://localhost:5173`
+   - API: `http://localhost:8080`
+   - Postgres: `localhost:5432`
+
+## Development Notes
+- Local services are container-first; host-installed .NET/Node is optional.
+- Keep `api` request handling independent from heavy analysis work in `worker`.
+- Use `src/shared` only for stable cross-service contracts.
+
+## Next Milestones
+Refer to `PROJECT_TEMPLATE_PLAN.md` for phased implementation details.
