@@ -4,7 +4,7 @@ Local-first chess analytics template using Docker Compose with separate `web`, `
 
 ## Stack
 - Web: React + Vite + Tailwind (containerized)
-- API: ASP.NET Core Web API (.NET 8)
+- API: ASP.NET Core Web API (.NET 10)
 - Worker: .NET Worker Service (ingestion + analysis)
 - Database: PostgreSQL 16
 

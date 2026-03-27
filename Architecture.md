@@ -11,7 +11,7 @@ Designed to be hostable later with minimal changes.
 ## Local deployment model
 Docker Compose runs 4 services:
 - web: React + Tailwind UI (Vite)
-- api: ASP.NET Core Web API (.NET 8)
+- api: ASP.NET Core Web API (.NET 10)
 - worker: .NET Worker Service (ingestion + analysis)
 - db: Postgres (persistent volume)
 
