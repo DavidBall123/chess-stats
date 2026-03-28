@@ -1,13 +1,20 @@
-# Workspace Scaffold Reference
+# Workspace Reference
 
-This document defines the expected workspace shape for the .NET solution once service projects are scaffolded.
+This document describes the current .NET workspace shape in the repository.
+
+## Current Projects
+- `src/api/ChessMonitor.Api.csproj`
+- `src/worker/ChessMonitor.Worker.csproj`
+
+## SDK and Framework
+- `global.json` pins the SDK to `.NET 10` (`10.0.104`).
+- `ChessMonitor.Api` targets `net10.0`.
+- `ChessMonitor.Worker` targets `net10.0`.
 
 ## Planned Solution File
 - Root solution file: `ChessMonitor.sln`
 
-## Planned Projects
-- `src/api/ChessMonitor.Api.csproj`
-- `src/worker/ChessMonitor.Worker.csproj`
+## Planned Shared Project
 - `src/shared/ChessMonitor.Shared.csproj`
 
 ## Dependency Direction

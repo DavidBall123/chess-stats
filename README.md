@@ -30,7 +30,7 @@ Local-first chess analytics template using Docker Compose with separate `web`, `
    - Postgres: `localhost:5432`
 
 ## Development Notes
-- Local services are container-first; host-installed .NET/Node is optional.
+- Local services are container-first; host-installed .NET 10 SDK/Node is optional.
 - Keep `api` request handling independent from heavy analysis work in `worker`.
 - Use `src/shared` only for stable cross-service contracts.
 
