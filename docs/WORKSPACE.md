@@ -5,6 +5,7 @@ This document describes the current .NET workspace shape in the repository.
 ## Current Projects
 - `src/api/ChessMonitor.Api.csproj`
 - `src/worker/ChessMonitor.Worker.csproj`
+- `src/shared/ChessMonitor.Shared.csproj`
 
 ## SDK and Framework
 - `global.json` pins the SDK to `.NET 10` (`10.0.104`).
@@ -13,9 +14,6 @@ This document describes the current .NET workspace shape in the repository.
 
 ## Planned Solution File
 - Root solution file: `ChessMonitor.sln`
-
-## Planned Shared Project
-- `src/shared/ChessMonitor.Shared.csproj`
 
 ## Dependency Direction
 - `ChessMonitor.Api` -> references `ChessMonitor.Shared`
