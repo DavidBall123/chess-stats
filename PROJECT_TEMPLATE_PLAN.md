@@ -23,7 +23,7 @@ Create a reusable project template from the current architecture (web/api/worker
 
 ### Phase 1: Baseline Template Skeleton
 ~~1. Add solution-level metadata and onboarding files.~~ ✅
-2. Add minimal runnable stubs in `web`, `api`, and `worker` (health endpoint, basic UI page, worker heartbeat log).
+~~2. Add minimal runnable stubs in `web`, `api`, and `worker` (health endpoint, basic UI page, worker heartbeat log).~~
 3. Add shared project/library in `src/shared` and reference it from `api` + `worker`.
 4. Add Dockerfiles for each service (if missing) aligned with compose build contexts.
 
