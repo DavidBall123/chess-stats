@@ -1,19 +1,14 @@
+using ChessMonitor.Shared;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-app.MapGet("/", () => Results.Ok(new
-{
-    service = "api",
-    status = "ok",
-    utc = DateTimeOffset.UtcNow
-}));
+static ServiceStatusResponse CreateStatus(string serviceName, IHostEnvironment environment) =>
+    new(serviceName, true, DateTimeOffset.UtcNow, environment.EnvironmentName);
 
-app.MapGet("/health", () => Results.Ok(new
-{
-    service = "api",
-    healthy = true,
-    utc = DateTimeOffset.UtcNow
-}));
+app.MapGet("/", (IHostEnvironment environment) => Results.Ok(CreateStatus("api", environment)));
+
+app.MapGet("/health", (IHostEnvironment environment) => Results.Ok(CreateStatus("api", environment)));
 
 app.Run();
