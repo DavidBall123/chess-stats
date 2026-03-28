@@ -4,7 +4,7 @@
 Create a reusable project template from the current architecture (web/api/worker/db) while preserving local-first Docker Compose development and a clear path to later hosting.
 
 ## Current Architecture Review
-- `Architecture.md` defines 4 services: `web` (Vite/React), `api` (.NET 8 Web API), `worker` (.NET worker), `db` (Postgres).
+- `Architecture.md` defines 4 services: `web` (Vite/React), `api` (.NET 10 Web API), `worker` (.NET worker), `db` (Postgres).
 - `infra/docker-compose.yml` already wires these services correctly for local orchestration.
 - `src/` folders already exist:
   - `src/web`
@@ -22,7 +22,7 @@ Create a reusable project template from the current architecture (web/api/worker
 ## Implementation Plan
 
 ### Phase 1: Baseline Template Skeleton
-1. Add solution-level metadata and onboarding files.
+~~1. Add solution-level metadata and onboarding files.~~ ✅
 2. Add minimal runnable stubs in `web`, `api`, and `worker` (health endpoint, basic UI page, worker heartbeat log).
 3. Add shared project/library in `src/shared` and reference it from `api` + `worker`.
 4. Add Dockerfiles for each service (if missing) aligned with compose build contexts.
