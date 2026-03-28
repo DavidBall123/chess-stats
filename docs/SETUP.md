@@ -5,6 +5,7 @@
 - Ubuntu (WSL distribution)
 - Docker Desktop with WSL Integration enabled for Ubuntu
 - Git
+- .NET 10 SDK
 
 ## WSL + Docker Desktop
 1. Verify WSL status:
@@ -41,6 +42,11 @@
 - Postgres: `localhost:5432`
 
 ## Common Commands
+- Build the .NET projects locally:
+  ```bash
+  dotnet build src/api/ChessMonitor.Api.csproj
+  dotnet build src/worker/ChessMonitor.Worker.csproj
+  ```
 - Start detached:
   ```bash
   docker compose -f infra/docker-compose.yml up -d --build
@@ -55,6 +61,7 @@
   ```
 
 ## Troubleshooting
+- If `dotnet build` uses the wrong SDK, run `dotnet --info` and confirm the repo-local `global.json` resolves to .NET 10.
 - If Docker commands fail in WSL, confirm Docker Desktop is running.
 - If ports are already in use, stop conflicting local services.
 - If worker exits early, confirm `.env` includes a valid `CHESSCOM_USERNAME`.
