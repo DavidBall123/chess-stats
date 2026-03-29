@@ -29,6 +29,24 @@ Local-first chess analytics template using Docker Compose with separate `web`, `
    - API: `http://localhost:8080`
    - Postgres: `localhost:5432`
 
+Required variables:
+- `CHESSCOM_USERNAME`
+
+Optional variables with safe defaults:
+- `POSTGRES_DB`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+- `DB_PORT`
+- `API_PORT`
+- `WEB_PORT`
+- `STOCKFISH_THREADS`
+- `STOCKFISH_DEPTH`
+- `VITE_API_BASE_URL`
+- `ASPNETCORE_ENVIRONMENT`
+- `DOTNET_ENVIRONMENT`
+
+If `CHESSCOM_USERNAME` is left blank, the stack still starts; the worker just runs without a configured Chess.com account.
+
 ## Development Notes
 - Local services are container-first; host-installed .NET 10 SDK/Node is optional.
 - Keep `api` request handling independent from heavy analysis work in `worker`.
