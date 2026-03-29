@@ -2,11 +2,16 @@ services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_DB: chessmonitor
-      POSTGRES_USER: chess
-      POSTGRES_PASSWORD: chess
+      POSTGRES_DB: ${POSTGRES_DB:-chessmonitor}
+      POSTGRES_USER: ${POSTGRES_USER:-chess}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chess}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - chessmonitor_db:/var/lib/postgresql/data
 
@@ -15,35 +20,48 @@ services:
       context: ../src
       dockerfile: api/Dockerfile
     environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__Default: Host=db;Port=5432;Database=chessmonitor;Username=chess;Password=chess
+      ConnectionStrings__Default: Host=db;Port=5432;Database=${POSTGRES_DB:-chessmonitor};Username=${POSTGRES_USER:-chess};Password=${POSTGRES_PASSWORD:-chess}
+      ChessCom__Username: ${CHESSCOM_USERNAME:-}
+      Stockfish__Threads: ${STOCKFISH_THREADS:-8}
+      Stockfish__Depth: ${STOCKFISH_DEPTH:-16}
     ports:
-      - "8080:8080"
+      - "${API_PORT:-8080}:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   worker:
     build:
       context: ../src
       dockerfile: worker/Dockerfile
     environment:
-      ConnectionStrings__Default: Host=db;Port=5432;Database=chessmonitor;Username=chess;Password=chess
-      ChessCom__Username: ${CHESSCOM_USERNAME}
-      Stockfish__Threads: "8"
-      Stockfish__Depth: "16"
+      DOTNET_ENVIRONMENT: ${DOTNET_ENVIRONMENT:-Development}
+      ConnectionStrings__Default: Host=db;Port=5432;Database=${POSTGRES_DB:-chessmonitor};Username=${POSTGRES_USER:-chess};Password=${POSTGRES_PASSWORD:-chess}
+      ChessCom__Username: ${CHESSCOM_USERNAME:-}
+      Stockfish__Threads: ${STOCKFISH_THREADS:-8}
+      Stockfish__Depth: ${STOCKFISH_DEPTH:-16}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   web:
     build:
       context: ../src
       dockerfile: web/Dockerfile
     environment:
-      VITE_API_BASE_URL: http://localhost:8080
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:5173"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     ports:
-      - "5173:5173"
+      - "${WEB_PORT:-5173}:5173"
     depends_on:
-      - api
+      api:
+        condition: service_started
 
 volumes:
   chessmonitor_db:

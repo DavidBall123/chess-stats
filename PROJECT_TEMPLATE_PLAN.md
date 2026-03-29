@@ -31,13 +31,13 @@ Deliverable:
 - `docker compose up --build` starts all services and basic health checks pass.
 
 ### Phase 2: Configuration and Environment Model
-1. Add `.env.example` at repo root with:
+~~1. Add `.env.example` at repo root with:~~ ✅
    - `CHESSCOM_USERNAME`
    - optional DB overrides
    - analysis defaults (stockfish depth/threads)
-2. Update compose to consume `.env` values with explicit defaults where safe.
-3. Add app configuration structure in `api` and `worker` (`ConnectionStrings`, `ChessCom`, `Stockfish`).
-4. Document required vs optional variables.
+~~2. Update compose to consume `.env` values with explicit defaults where safe.~~ ✅
+~~3. Add app configuration structure in `api` and `worker` (`ConnectionStrings`, `ChessCom`, `Stockfish`).~~ ✅
+~~4. Document required vs optional variables.~~ ✅
 
 Deliverable:
 - New contributor can copy `.env.example` to `.env` and run locally without code edits.

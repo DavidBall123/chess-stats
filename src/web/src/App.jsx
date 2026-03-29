@@ -5,7 +5,7 @@ export default function App() {
       <p>Web stub is running.</p>
       <ul>
         <li>API base URL: {import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'}</li>
-        <li>Status: Phase 1 Item 2 scaffold complete</li>
+        <li>Status: Phase 2 configuration model complete</li>
       </ul>
     </main>
   );

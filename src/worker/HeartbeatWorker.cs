@@ -1,8 +1,14 @@
 using ChessMonitor.Shared;
+using ChessMonitor.Shared.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace ChessMonitor.Worker;
 
-public sealed class HeartbeatWorker(ILogger<HeartbeatWorker> logger) : BackgroundService
+public sealed class HeartbeatWorker(
+    ILogger<HeartbeatWorker> logger,
+    IHostEnvironment environment,
+    IOptions<ChessComOptions> chessComOptions,
+    IOptions<StockfishOptions> stockfishOptions) : BackgroundService
 {
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(30);
 
@@ -10,10 +16,13 @@ public sealed class HeartbeatWorker(ILogger<HeartbeatWorker> logger) : Backgroun
     {
         var started = CreateStatus();
         logger.LogInformation(
-            "Worker heartbeat started for {Service} in {Environment} at {UtcTime}",
+            "Worker heartbeat started for {Service} in {Environment} at {UtcTime}. ChessComUsernameConfigured={ChessComUsernameConfigured}, StockfishThreads={StockfishThreads}, StockfishDepth={StockfishDepth}",
             started.Service,
             started.Environment,
-            started.Utc);
+            started.Utc,
+            !string.IsNullOrWhiteSpace(chessComOptions.Value.Username),
+            stockfishOptions.Value.Threads,
+            stockfishOptions.Value.Depth);
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -34,6 +43,6 @@ public sealed class HeartbeatWorker(ILogger<HeartbeatWorker> logger) : Backgroun
             stopped.Utc);
     }
 
-    private static ServiceStatusResponse CreateStatus() =>
-        new("worker", true, DateTimeOffset.UtcNow, Environments.Production);
+    private ServiceStatusResponse CreateStatus() =>
+        new("worker", true, DateTimeOffset.UtcNow, environment.EnvironmentName);
 }

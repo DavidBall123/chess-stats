@@ -29,12 +29,20 @@
    ```bash
    cp .env.example .env
    ```
-3. Edit `.env` and set:
+3. Edit `.env`.
+4. Required:
    - `CHESSCOM_USERNAME`
-4. Start stack:
+5. Optional overrides with defaults already supplied in `.env.example`:
+   - `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
+   - `DB_PORT`, `API_PORT`, `WEB_PORT`
+   - `STOCKFISH_THREADS`, `STOCKFISH_DEPTH`
+   - `VITE_API_BASE_URL`
+   - `ASPNETCORE_ENVIRONMENT`, `DOTNET_ENVIRONMENT`
+6. Start stack:
    ```bash
    docker compose -f infra/docker-compose.yml up --build
    ```
+   The stack will still start if `CHESSCOM_USERNAME` is unset, but the worker will not have a Chess.com account configured.
 
 ## Service Endpoints
 - Web UI: `http://localhost:5173`
@@ -65,3 +73,5 @@
 - If Docker commands fail in WSL, confirm Docker Desktop is running.
 - If ports are already in use, stop conflicting local services.
 - If worker exits early, confirm `.env` includes a valid `CHESSCOM_USERNAME`.
+- Use `docker compose -f infra/docker-compose.yml ps` to confirm `db`, `api`, and `web` are `healthy` after startup.
+- `api` and `worker` both bind `ConnectionStrings`, `ChessCom`, and `Stockfish` configuration from `appsettings.json` plus environment overrides.
