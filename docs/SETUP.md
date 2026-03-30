@@ -46,6 +46,8 @@
    - `http://localhost:8080/health`
    - `http://localhost:8080/api/dashboard/overview`
    - `http://localhost:8080/api/dashboard/filters`
+   The stack will still start if `CHESSCOM_USERNAME` is unset, but the worker will not have a Chess.com account configured.
+   The stack will still start if `CHESSCOM_USERNAME` is unset, but the worker will not have a Chess.com account configured.
 
 ## Service Endpoints
 - Web UI: `http://localhost:5173`
@@ -78,3 +80,7 @@
 - If worker exits early, confirm `.env` includes a valid `CHESSCOM_USERNAME`.
 - If the dashboard endpoints return no data, remove the DB volume and restart so the sample seed runs against a clean database.
 - If repo-root `.env` values do not appear inside containers, make sure the command includes `--env-file .env`.
+- Use `docker compose -f infra/docker-compose.yml ps` to confirm `db`, `api`, and `web` are `healthy` after startup.
+- `api` and `worker` both bind `ConnectionStrings`, `ChessCom`, and `Stockfish` configuration from `appsettings.json` plus environment overrides.
+- Use `docker compose --env-file .env -f infra/docker-compose.yml ps` to confirm `db`, `api`, and `web` are healthy after startup.
+- `api` and `worker` both bind `ConnectionStrings`, `ChessCom`, and `Stockfish` configuration from `appsettings.json` plus environment overrides.

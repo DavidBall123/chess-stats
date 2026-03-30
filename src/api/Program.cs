@@ -48,7 +48,6 @@ await using (var scope = app.Services.CreateAsyncScope())
     await migrator.MigrateAsync(app.Lifetime.ApplicationStopping);
     await seeder.SeedAsync(app.Lifetime.ApplicationStopping);
 }
-
 var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
 var connectionStrings = app.Services.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
 var chessCom = app.Services.GetRequiredService<IOptions<ChessComOptions>>().Value;

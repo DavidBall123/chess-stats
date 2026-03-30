@@ -52,6 +52,7 @@ Useful API endpoints:
 
 Note:
 When using `infra/docker-compose.yml`, pass `--env-file .env` so Docker Compose reads the repo-root environment file.
+If `CHESSCOM_USERNAME` is left blank, the stack still starts; the worker just runs without a configured Chess.com account.
 
 ## Development Notes
 - Local services are container-first; host-installed .NET 10 SDK/Node is optional.
