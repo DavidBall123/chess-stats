@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-
 namespace ChessMonitor.Shared.Configuration;
 
 public sealed class StockfishOptions

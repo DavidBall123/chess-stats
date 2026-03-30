@@ -1,6 +1,8 @@
+using ChessMonitor.Api.Data;
 using ChessMonitor.Shared;
 using ChessMonitor.Shared.Configuration;
 using Microsoft.Extensions.Options;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +30,24 @@ builder.Services
         $"{StockfishOptions.SectionName}:Depth must be between 1 and 50.")
     .ValidateOnStart();
 
+builder.Services.AddSingleton(sp =>
+{
+    var connectionString = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value.Default;
+    return new NpgsqlDataSourceBuilder(connectionString).Build();
+});
+builder.Services.AddSingleton<DatabaseMigrator>();
+builder.Services.AddSingleton<ChessMonitorRepository>();
+builder.Services.AddSingleton<SampleDataSeeder>();
+
 var app = builder.Build();
 
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var migrator = scope.ServiceProvider.GetRequiredService<DatabaseMigrator>();
+    var seeder = scope.ServiceProvider.GetRequiredService<SampleDataSeeder>();
+    await migrator.MigrateAsync(app.Lifetime.ApplicationStopping);
+    await seeder.SeedAsync(app.Lifetime.ApplicationStopping);
+}
 var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
 var connectionStrings = app.Services.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
 var chessCom = app.Services.GetRequiredService<IOptions<ChessComOptions>>().Value;
@@ -48,5 +66,11 @@ static ServiceStatusResponse CreateStatus(string serviceName, IHostEnvironment e
 app.MapGet("/", (IHostEnvironment environment) => Results.Ok(CreateStatus("api", environment)));
 
 app.MapGet("/health", (IHostEnvironment environment) => Results.Ok(CreateStatus("api", environment)));
+
+app.MapGet("/api/dashboard/overview", async (ChessMonitorRepository repository, CancellationToken cancellationToken) =>
+    Results.Ok(await repository.GetDashboardOverviewAsync(cancellationToken)));
+
+app.MapGet("/api/dashboard/filters", async (ChessMonitorRepository repository, CancellationToken cancellationToken) =>
+    Results.Ok(await repository.GetDashboardFiltersAsync(cancellationToken)));
 
 app.Run();

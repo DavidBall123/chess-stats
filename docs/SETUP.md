@@ -40,8 +40,13 @@
    - `ASPNETCORE_ENVIRONMENT`, `DOTNET_ENVIRONMENT`
 6. Start stack:
    ```bash
-   docker compose -f infra/docker-compose.yml up --build
+   docker compose --env-file .env -f infra/docker-compose.yml up --build
    ```
+7. Verify endpoints:
+   - `http://localhost:8080/health`
+   - `http://localhost:8080/api/dashboard/overview`
+   - `http://localhost:8080/api/dashboard/filters`
+   The stack will still start if `CHESSCOM_USERNAME` is unset, but the worker will not have a Chess.com account configured.
    The stack will still start if `CHESSCOM_USERNAME` is unset, but the worker will not have a Chess.com account configured.
 
 ## Service Endpoints
@@ -57,15 +62,15 @@
   ```
 - Start detached:
   ```bash
-  docker compose -f infra/docker-compose.yml up -d --build
+  docker compose --env-file .env -f infra/docker-compose.yml up -d --build
   ```
 - Stop services:
   ```bash
-  docker compose -f infra/docker-compose.yml down
+  docker compose --env-file .env -f infra/docker-compose.yml down
   ```
 - Stop and remove volume (fresh DB):
   ```bash
-  docker compose -f infra/docker-compose.yml down -v
+  docker compose --env-file .env -f infra/docker-compose.yml down -v
   ```
 
 ## Troubleshooting
@@ -73,5 +78,9 @@
 - If Docker commands fail in WSL, confirm Docker Desktop is running.
 - If ports are already in use, stop conflicting local services.
 - If worker exits early, confirm `.env` includes a valid `CHESSCOM_USERNAME`.
+- If the dashboard endpoints return no data, remove the DB volume and restart so the sample seed runs against a clean database.
+- If repo-root `.env` values do not appear inside containers, make sure the command includes `--env-file .env`.
 - Use `docker compose -f infra/docker-compose.yml ps` to confirm `db`, `api`, and `web` are `healthy` after startup.
+- `api` and `worker` both bind `ConnectionStrings`, `ChessCom`, and `Stockfish` configuration from `appsettings.json` plus environment overrides.
+- Use `docker compose --env-file .env -f infra/docker-compose.yml ps` to confirm `db`, `api`, and `web` are healthy after startup.
 - `api` and `worker` both bind `ConnectionStrings`, `ChessCom`, and `Stockfish` configuration from `appsettings.json` plus environment overrides.

@@ -43,10 +43,10 @@ Deliverable:
 - New contributor can copy `.env.example` to `.env` and run locally without code edits.
 
 ### Phase 3: Data Layer and Contracts
-1. Define domain entities in `shared` (Game, AnalysisResult, OpeningStat, TimeControlStat).
-2. Set up DB schema/migrations in API or a dedicated data project.
-3. Implement idempotent game upsert model required by architecture.
-4. Define API response contracts for dashboard and filters.
+~~1. Define domain entities in `shared` (Game, AnalysisResult, OpeningStat, TimeControlStat).~~ ✅
+~~2. Set up DB schema/migrations in API or a dedicated data project.~~ ✅
+~~3. Implement idempotent game upsert model required by architecture.~~ ✅
+~~4. Define API response contracts for dashboard and filters.~~ ✅
 
 Deliverable:
 - DB can be initialized from migrations; API returns typed placeholder stats from DB.
