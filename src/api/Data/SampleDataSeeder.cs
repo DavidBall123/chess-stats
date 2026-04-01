@@ -6,8 +6,8 @@ using Microsoft.Extensions.Options;
 namespace ChessMonitor.Api.Data;
 
 public sealed class SampleDataSeeder(
-    ChessMonitorRepository repository,
-    IOptions<ChessComOptions> chessComOptions)
+    IChessMonitorRepository repository,
+    IOptions<ChessComOptions> chessComOptions) : ISampleDataSeeder
 {
     public async Task SeedAsync(CancellationToken cancellationToken)
     {
@@ -74,7 +74,7 @@ public sealed class SampleDataSeeder(
                 "C50",
                 "Italian Game",
                 null,
-                new AnalysisResult(Guid.Empty, 1, 1, 0, 18.7m, now)),
+                new AnalysisResult(Guid.Empty, 1, 1, 0, 18.7m, now))
         };
 
         foreach (var game in sampleGames)
