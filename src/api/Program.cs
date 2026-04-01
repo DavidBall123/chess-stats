@@ -1,8 +1,8 @@
 using ChessMonitor.Api.Data;
 using ChessMonitor.Shared;
 using ChessMonitor.Shared.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,22 +30,22 @@ builder.Services
         $"{StockfishOptions.SectionName}:Depth must be between 1 and 50.")
     .ValidateOnStart();
 
-builder.Services.AddSingleton(sp =>
+builder.Services.AddDbContext<ChessMonitorDbContext>((sp, options) =>
 {
     var connectionString = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value.Default;
-    return new NpgsqlDataSourceBuilder(connectionString).Build();
+    options.UseNpgsql(connectionString);
 });
-builder.Services.AddSingleton<DatabaseMigrator>();
-builder.Services.AddSingleton<ChessMonitorRepository>();
-builder.Services.AddSingleton<SampleDataSeeder>();
+builder.Services.AddScoped<IChessMonitorRepository, EntityFrameworkChessMonitorRepository>();
+builder.Services.AddScoped<IDatabaseInitializer, EntityFrameworkDatabaseInitializer>();
+builder.Services.AddScoped<ISampleDataSeeder, SampleDataSeeder>();
 
 var app = builder.Build();
 
 await using (var scope = app.Services.CreateAsyncScope())
 {
-    var migrator = scope.ServiceProvider.GetRequiredService<DatabaseMigrator>();
-    var seeder = scope.ServiceProvider.GetRequiredService<SampleDataSeeder>();
-    await migrator.MigrateAsync(app.Lifetime.ApplicationStopping);
+    var databaseInitializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
+    var seeder = scope.ServiceProvider.GetRequiredService<ISampleDataSeeder>();
+    await databaseInitializer.InitializeAsync(app.Lifetime.ApplicationStopping);
     await seeder.SeedAsync(app.Lifetime.ApplicationStopping);
 }
 var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
@@ -67,10 +67,10 @@ app.MapGet("/", (IHostEnvironment environment) => Results.Ok(CreateStatus("api",
 
 app.MapGet("/health", (IHostEnvironment environment) => Results.Ok(CreateStatus("api", environment)));
 
-app.MapGet("/api/dashboard/overview", async (ChessMonitorRepository repository, CancellationToken cancellationToken) =>
+app.MapGet("/api/dashboard/overview", async (IChessMonitorRepository repository, CancellationToken cancellationToken) =>
     Results.Ok(await repository.GetDashboardOverviewAsync(cancellationToken)));
 
-app.MapGet("/api/dashboard/filters", async (ChessMonitorRepository repository, CancellationToken cancellationToken) =>
+app.MapGet("/api/dashboard/filters", async (IChessMonitorRepository repository, CancellationToken cancellationToken) =>
     Results.Ok(await repository.GetDashboardFiltersAsync(cancellationToken)));
 
 app.Run();
