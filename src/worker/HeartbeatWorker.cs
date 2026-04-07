@@ -1,5 +1,6 @@
 using ChessMonitor.Shared;
 using ChessMonitor.Shared.Configuration;
+using ChessMonitor.Worker.Ingestion;
 using Microsoft.Extensions.Options;
 
 namespace ChessMonitor.Worker;
@@ -8,7 +9,10 @@ public sealed class HeartbeatWorker(
     ILogger<HeartbeatWorker> logger,
     IHostEnvironment environment,
     IOptions<ChessComOptions> chessComOptions,
-    IOptions<StockfishOptions> stockfishOptions) : BackgroundService
+    IOptions<StockfishOptions> stockfishOptions,
+    IArchiveFetcher archiveFetcher,
+    IGameParser gameParser,
+    IPersistenceWriter persistenceWriter) : BackgroundService
 {
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(30);
 
@@ -27,11 +31,24 @@ public sealed class HeartbeatWorker(
         while (!stoppingToken.IsCancellationRequested)
         {
             var heartbeat = CreateStatus();
+            var archives = await archiveFetcher.FetchArchivesAsync(stoppingToken);
+
+            var parsedGames = new List<ChessMonitor.Shared.Contracts.GameUpsertRequest>();
+            foreach (var archive in archives)
+            {
+                var games = await gameParser.ParseGamesAsync(archive, stoppingToken);
+                parsedGames.AddRange(games);
+            }
+
+            var persistenceResult = await persistenceWriter.WriteGamesAsync(parsedGames, stoppingToken);
             logger.LogInformation(
-                "Worker heartbeat for {Service} in {Environment} at {UtcTime}",
+                "Worker heartbeat for {Service} in {Environment} at {UtcTime}. IngestionArchives={IngestionArchives}, ParsedGames={ParsedGames}, PersistedGames={PersistedGames}",
                 heartbeat.Service,
                 heartbeat.Environment,
-                heartbeat.Utc);
+                heartbeat.Utc,
+                archives.Count,
+                parsedGames.Count,
+                persistenceResult.Persisted);
             await Task.Delay(Interval, stoppingToken);
         }
 

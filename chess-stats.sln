@@ -1,0 +1,52 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{C8E42992-5E42-0C2B-DBFE-AA848D06431C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessMonitor.Shared", "src\shared\ChessMonitor.Shared.csproj", "{D40FA28B-2088-0D34-7EC3-0D61C6DCE007}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{81034408-37C8-1011-444E-4C15C2FADA8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessMonitor.Api", "src\api\ChessMonitor.Api.csproj", "{83E8116C-3D51-695B-1A94-A0208A065616}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "worker", "worker", "{89BA21D6-604E-9DA1-5F6C-9062FD58212E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessMonitor.Worker", "src\worker\ChessMonitor.Worker.csproj", "{450E1ECA-45F0-0A80-188B-1EAB79010E50}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D40FA28B-2088-0D34-7EC3-0D61C6DCE007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D40FA28B-2088-0D34-7EC3-0D61C6DCE007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D40FA28B-2088-0D34-7EC3-0D61C6DCE007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D40FA28B-2088-0D34-7EC3-0D61C6DCE007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83E8116C-3D51-695B-1A94-A0208A065616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83E8116C-3D51-695B-1A94-A0208A065616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83E8116C-3D51-695B-1A94-A0208A065616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83E8116C-3D51-695B-1A94-A0208A065616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{450E1ECA-45F0-0A80-188B-1EAB79010E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{450E1ECA-45F0-0A80-188B-1EAB79010E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{450E1ECA-45F0-0A80-188B-1EAB79010E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{450E1ECA-45F0-0A80-188B-1EAB79010E50}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C8E42992-5E42-0C2B-DBFE-AA848D06431C} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{D40FA28B-2088-0D34-7EC3-0D61C6DCE007} = {C8E42992-5E42-0C2B-DBFE-AA848D06431C}
+		{81034408-37C8-1011-444E-4C15C2FADA8E} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{83E8116C-3D51-695B-1A94-A0208A065616} = {81034408-37C8-1011-444E-4C15C2FADA8E}
+		{89BA21D6-604E-9DA1-5F6C-9062FD58212E} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{450E1ECA-45F0-0A80-188B-1EAB79010E50} = {89BA21D6-604E-9DA1-5F6C-9062FD58212E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66065315-5709-4A91-944C-B9DBE58B9ECE}
+	EndGlobalSection
+EndGlobal
