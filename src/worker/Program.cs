@@ -1,5 +1,6 @@
 using ChessMonitor.Shared.Configuration;
 using ChessMonitor.Worker;
+using ChessMonitor.Worker.Ingestion;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -26,6 +27,10 @@ builder.Services
         options => options.Depth is >= 1 and <= 50,
         $"{StockfishOptions.SectionName}:Depth must be between 1 and 50.")
     .ValidateOnStart();
+
+builder.Services.AddSingleton<IArchiveFetcher, MockArchiveFetcher>();
+builder.Services.AddSingleton<IGameParser, MockGameParser>();
+builder.Services.AddSingleton<IPersistenceWriter, MockPersistenceWriter>();
 
 builder.Services.AddHostedService<HeartbeatWorker>();
 

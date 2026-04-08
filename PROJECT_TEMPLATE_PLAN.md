@@ -52,7 +52,7 @@ Deliverable:
 - DB can be initialized from migrations; API returns typed placeholder stats from DB.
 
 ### Phase 4: Worker Pipeline Template
-1. Add ingestion pipeline interfaces:
+~~1. Add ingestion pipeline interfaces:~~ ✅
    - archive fetcher
    - game parser
    - persistence writer
